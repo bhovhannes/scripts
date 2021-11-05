@@ -9,9 +9,12 @@
 # Links from github.com are also supported:
 #   clone git@github.com:bvaughn/react-window.git
 #
-clone() {
-    # set -euo pipefail
+git_clone_into_local_path() {
+    set -euo pipefail
     local git_extension=".git"
+    
+    # Which editor to use
+    local editor="webstorm"   
     
     # Where to clone projects from work gitlab instance
     local local_work_gitlab_dir="${HOME}/dev/gitlab/"
@@ -53,7 +56,7 @@ clone() {
         if [[ $open == 1 ]]
         then
             echo "Opening ${path} in editor ..."
-            open "${path}"
+            command $editor "${path}"
         fi
     else
         echo "Don't know what to do with ${url}. Please pass a valid git url, starting with 'git@'."
