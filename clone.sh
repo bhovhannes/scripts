@@ -10,7 +10,7 @@
 #   clone git@github.com:bvaughn/react-window.git
 #
 clone() {
-    set -euo pipefail
+    # set -euo pipefail
     local git_extension=".git"
     
     # Where to clone projects from work gitlab instance
@@ -30,7 +30,7 @@ clone() {
         shift
     done
 
-    if [[ "${url}" == git@* ]]
+    if [[ $url == git@* ]]
     then
         # Determine path from git url
         local path=${url#*@}
@@ -38,31 +38,25 @@ clone() {
         path=${path#*:}
         if [[ $path == *${git_extension} ]]
         then
-            path=${path::${#path}-${#git_extension}}
+            path=${path%${git_extension}}
         fi
 
         # Build local directory path to clone repo into
-        case "$host" in
-        "gitlab.workfront.tech")
-            path="${local_work_gitlab_dir}${path}"
-            ;;
-        "github.com")
-            path="${local_personal_github_dir}${path}"
-            ;;
-        *)
-            ;;
+        case $host in
+        "gitlab.workfront.tech") path="${local_work_gitlab_dir}${path}" ;;
+        "github.com") path="${local_personal_github_dir}${path}" ;;
         esac
 
         echo "Cloning ${url} ..."
-        git clone $url "${path}"
+        git clone "${url}" "${path}"
         
-        if [[ open == 1 ]]
+        if [[ $open == 1 ]]
         then
             echo "Opening ${path} in editor ..."
             open "${path}"
         fi
     else
         echo "Don't know what to do with ${url}. Please pass a valid git url, starting with 'git@'."
-        exit 1
+        return 1
     fi
 }
