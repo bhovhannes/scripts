@@ -60,7 +60,7 @@ then
             # shellcheck disable=SC2162
             read -p "Do you wish to remove it and clone from scratch? " yn
             case $yn in
-                [Yy]* ) echo "Sounds good, I will 'rm -rf' it now.\n"; rm -rf "${_path}"; break;;
+                [Yy]* ) printf "Sounds good, I will 'rm -rf' it now.\n"; rm -rf "${_path}"; break;;
                 [Nn]* ) exit;;
                 * ) echo "Please answer yes or no.";;
             esac
