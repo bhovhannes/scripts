@@ -51,6 +51,21 @@ then
     "gitlab.workfront.tech") _path="${local_work_gitlab_dir}${_path}" ;;
     "github.com") _path="${local_personal_github_dir}${_path}" ;;
     esac
+    
+    # Ask what to do if directory exists
+    if [[ -d "${_path}" ]]
+    then
+        while true; do
+            printf "\nDirectory \"%s\" already exists.\n" "${_path}"
+            # shellcheck disable=SC2162
+            read -p "Do you wish to remove it and clone from scratch? " yn
+            case $yn in
+                [Yy]* ) echo "Sounds good, I will 'rm -rf' it now.\n"; rm -rf "${_path}"; break;;
+                [Nn]* ) exit;;
+                * ) echo "Please answer yes or no.";;
+            esac
+        done
+    fi
 
     echo "Cloning ${_url} ..."
     git clone "${_url}" "${_path}"
