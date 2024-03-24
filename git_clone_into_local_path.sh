@@ -17,13 +17,16 @@ set -euo pipefail
 _git_extension=".git"
 
 # Which editor to use
-_editor="webstorm"   
+_editor="/Applications/WebStorm.app/Contents/MacOS/webstorm"   
 
 # Where to clone projects from work gitlab instance
 local_work_gitlab_dir="${HOME}/dev/gitlab/"
 
 # Where to clone projects from github.com
 local_personal_github_dir="${HOME}/Projects/github/"
+
+# Where to clone projects from git.corp.adobe.com
+local_corp_github_dir="${HOME}/dev/github/"
 
 # loop through command-line args and fill variables accordingly
 _open=1
@@ -50,6 +53,7 @@ then
     case $_host in
     "gitlab.workfront.tech") _path="${local_work_gitlab_dir}${_path}" ;;
     "github.com") _path="${local_personal_github_dir}${_path}" ;;
+    "git.corp.adobe.com") _path="${local_corp_github_dir}${_path}" ;;
     esac
     
     # Ask what to do if directory exists
