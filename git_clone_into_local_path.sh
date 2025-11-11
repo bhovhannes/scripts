@@ -47,6 +47,8 @@ _git_extension=".git"
 # Default editor to use
 default_editor="webstorm"
 
+# The list of editors which can be used with --editor flag or shorthand flags.
+# Add your editor here if you want to use it with --editor flag or with --<your-editor> flag.
 supported_editors="cursor zed webstorm"
 
 # Where to clone projects from work gitlab instance
