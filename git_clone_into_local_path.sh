@@ -7,9 +7,11 @@
 # If you don't want to open editor automatically, pass --no-open flag:
 #   ./git_clone_into_local_path.sh --no-open git@gitlab.workfront.tech:visibility/titan-solr-search.git
 # 
-# To specify a different editor, use --editor flag:
+# To specify a different editor, use --editor flag or shorthand flags:
 #   ./git_clone_into_local_path.sh --editor=cursor git@github.com:bvaughn/react-window.git
-#   ./git_clone_into_local_path.sh --editor=zed git@github.com:bvaughn/react-window.git
+#   ./git_clone_into_local_path.sh --cursor git@github.com:bvaughn/react-window.git
+#   ./git_clone_into_local_path.sh --zed git@github.com:bvaughn/react-window.git
+#   ./git_clone_into_local_path.sh --webstorm git@github.com:bvaughn/react-window.git
 # 
 # Links from github.com are also supported:
 #   ./git_clone_into_local_path.sh git@github.com:bvaughn/react-window.git
@@ -43,7 +45,9 @@ set -euo pipefail
 _git_extension=".git"
 
 # Default editor to use
-default_editor="webstorm"   
+default_editor="webstorm"
+
+supported_editors="cursor zed webstorm"
 
 # Where to clone projects from work gitlab instance
 local_work_gitlab_dir="${HOME}/dev/gitlab/"
@@ -64,8 +68,17 @@ _open=1
 _editor="${default_editor}"
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --no-_open) _open=0 ;;
+        --no-open) _open=0 ;;
         --editor=*) _editor="${1#*=}" ;;
+        --*)
+            # Check if argument matches any supported editor
+            _flag="${1#--}"
+            if [[ " ${supported_editors} " == *" ${_flag} "* ]]; then
+                _editor="${_flag}"
+            else
+                _url=$1
+            fi
+            ;;
         *) _url=$1 ;;
     esac
     shift
