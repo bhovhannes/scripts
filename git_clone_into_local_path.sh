@@ -191,8 +191,15 @@ then
     "github.com")
         # Extract first path segment (organization/user name)
         _first_segment=${_path%%/*}
-        # Check if first segment contains Adobe- or -Adobe, or is exactly OneAdobe
+        # Check if first segment contains Adobe- or -Adobe, or is exactly OneAdobe (case-insensitive)
+        shopt -s nocasematch
         if [[ $_first_segment == *"Adobe-"* ]] || [[ $_first_segment == *"-Adobe"* ]] || [[ $_first_segment == "OneAdobe" ]]; then
+            _is_adobe_org=1
+        else
+            _is_adobe_org=0
+        fi
+        shopt -u nocasematch
+        if [[ $_is_adobe_org -eq 1 ]]; then
             _base_dir="${local_ghec_dir}"
             _path="${local_ghec_dir}${_path}"
             _url=${_url/github.com/ghec}
